@@ -1,4 +1,5 @@
 import pytest
+from typing import Any
 from app.main import get_human_age
 
 
@@ -15,20 +16,23 @@ from app.main import get_human_age
         (100, 100, [21, 17]),
     ]
 )
-def test_get_human_age_valid_inputs(cat_age: int, dog_age: int,
+def test_get_human_age_valid_inputs(cat_age: int,
+                                    dog_age: int,
                                     expected: list) -> None:
     assert get_human_age(cat_age, dog_age) == expected
 
 
-def test_get_human_age_raises_type_error() -> None:
-    with pytest.raises(TypeError):
-        get_human_age("10", 10)
-    with pytest.raises(TypeError):
-        get_human_age(10, "dog")
-
-
-def test_get_human_age_raises_value_error() -> None:
-    with pytest.raises(ValueError):
-        get_human_age(-1, 10)
-    with pytest.raises(ValueError):
-        get_human_age(10, -5)
+@pytest.mark.parametrize(
+    "cat_age,dog_age,expected_error",
+    [
+        ("10", 10, TypeError),
+        (10, "dog", TypeError),
+        (-1, 10, ValueError),
+        (10, -5, ValueError),
+    ]
+)
+def test_get_human_age_raises_errors(cat_age: Any,
+                                     dog_age: Any,
+                                     expected_error: Any) -> None:
+    with pytest.raises(expected_error):
+        get_human_age(cat_age, dog_age)

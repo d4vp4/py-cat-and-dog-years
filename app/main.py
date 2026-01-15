@@ -2,7 +2,6 @@ def get_human_age(cat_age: int, dog_age: int) -> list:
     if not isinstance(cat_age, int) or not isinstance(dog_age, int):
         raise TypeError("Arguments must be integers")
 
-        # 2. Перевірка: чи не є вік від'ємним
     if cat_age < 0 or dog_age < 0:
         raise ValueError("Age cannot be negative")
 
